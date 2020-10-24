@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Dostępne książki{% endblock %}
+
+{% block content %}
+            <br>
+<a class="small blue button" href="{% url 'library' %}">Powrót do Strony Głównej</a>
+    <h2>Dostepne książki</h2>
+{% if book_list %}
+    <table class="styled-table">
+    <thead>
+        <tr>
+            <th>Indeks</th>
+            <th>Tytuł</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for book in book_list %}
+            <tr>
+            <td><a href="/book/{{ book.id }}">{{  book.number }}</a></td>
+            <td>{{ book.name }}</td>
+            </tr>
+        {% endfor %}
+ </tbody>
+</table>
+{% else %}
+<p>Brak dostępnych książek</p>
+{% endif %}
+</form>
+
+
+{% endblock %}

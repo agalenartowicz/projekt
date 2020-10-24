@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Usuń książkę{% endblock %}
+
+{% block content %}
+<br>
+<a class="small blue button" href="{% url 'library' %}">Powrót do Strony Głównej</a>
+<form action="{% url 'book-delete' book.id %}" method="POST">
+    {% csrf_token %}
+    <table>
+    {{ form }}
+        <table class="styled-table">
+    <thead>
+        <tr>
+            <th>Indeks</th>
+            <th>Tytuł</th>
+            <th>Dostępność</th>
+        </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>{{ book.number }}</td>
+         <td>{{ book.name }}</td>
+        {% if book.is_available %}
+            <td>Dostępna</td>
+        {% else %}
+            <td>Wypożyczona</td>
+        {%  endif %}
+        </tr>
+            </tbody>
+</table>
+    {% if request.user.is_superuser %}
+    <input type="submit" class="small blue button"value="Usuń">
+    {% else %}
+    <p>Nie masz uprawnień do usuwania książek</p>
+    {% endif %}
+</form>
+
+
+{% endblock %}

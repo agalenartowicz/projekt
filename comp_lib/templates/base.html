@@ -1,0 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<link rel="stylesheet" href="{% static 'css/lib.css' %}">
+<link rel="stylesheet" href="{% static 'css/buttons.css' %}">
+<link rel="stylesheet" href="{% static 'css/table.css' %}">
+    <title>{% block title %}{% endblock %}</title>
+</head>
+       <body>
+            <div class="hero-nav">
+                <div class="hero-nav__inner">
+                    <h1>Biblioteka Zakładowa</h1>
+                    <h1>Light Code Sp. z.o.o.</h1>
+                </div>
+            </div>
+                {% block content %}
+                {% endblock %}
+
+
+            <hr />
+            {% if user.is_authenticated %}
+    Zalogowany jako: {{ user }} <a class="small blue button" href="{% url 'logout' %}">WYLOGUJ</a>
+{% else %}
+    Niezalogowany <a class="small blue button" href="{% url 'login' %}">LOGOWANIE</a>
+                lub <a class="small blue button" href="{% url 'add-user' %}">REJESTRACJA</a>
+{% endif %}
+
+            </body>
+</html>

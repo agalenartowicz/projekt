@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Historia wypożyczeń{% endblock %}
+
+{%block content %}
+
+    <br>
+<a class="small blue button" href="{% url 'library' %}">Powrót do Strony Głównej</a>
+{% if request.user.is_superuser %}
+<h2>Historia:</h2>
+    <table class="styled-table">
+    <thead>
+        <tr>
+            <th>Tytuł</th>
+            <th>Wypożyczający</th>
+            <th>Data/Godzina</th>
+            <th>Użytkownik</th>
+            <th>Typ akcji</th>
+        </tr>
+    </thead>
+    <tbody>
+ {% for t in object_list %}
+        <tr>
+            <td>{{ t.name }}</td>
+            <td>{{ t.borrower.get_full_name }}</td>
+            <td>{{ t.history_date }}</td>
+            <td>{{ t.history_user.get_full_name }}</td>
+            {% if t.get_history_type_display == 'Created' %}
+                <td>Dodana</td>
+            {% elif t.get_history_type_display == 'Deleted' %}
+                <td>Usunięta</td>
+            {% elif t.is_available %}
+                <td>Zwrócona</td>
+            {% else %}
+                <td>Wypożyczona</td>
+            {% endif %}
+
+        </tr>
+        {% endfor %}
+        </tbody>
+</table>
+{% endif %}
+{% endblock %}

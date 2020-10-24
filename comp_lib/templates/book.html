@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% block title %}Książka {{ book }}{% endblock %}
+
+{%block content %}
+<br>
+<a class="small blue button" href="{% url 'library' %}">Powrót do Strony Głównej</a>
+<form action="" method="post">
+{% csrf_token %}
+{% if user.is_authenticated and book.is_available %}
+    <table class="styled-table">
+    <thead>
+        <tr>
+            <th>Indeks</th>
+            <th>Tytuł</th>
+            <th>Dostępność</th>
+        </tr>
+    </thead>
+    <tbody>
+<tr>
+<td>{{ book.number }}</td>
+<td>{{ book.name }}</td>
+{% if book.is_available %}
+        <td>Dostępna</td>
+{% else %}
+        <td>Wypożyczona</td>
+{%  endif %}
+</tr>
+  </tbody>
+</table>
+
+<input type="submit" class="small blue button" name="loan" value="Wypożycz">
+
+{% elif user.is_authenticated and book.is_available != 'true' and user == book.borrower %}
+<table class="styled-table">
+    <thead>
+        <tr>
+            <th>Indeks</th>
+            <th>Tytuł</th>
+            <th>Wypożyczona przez</th>
+            <th>Wypożyczona dnia</th>
+            <th>Dostępność</th>
+        </tr>
+    </thead>
+    <tbody>
+<tr>
+<td>{{ book.number }}</td>
+<td>{{ book.name }}</td>
+<td>{{ book.borrower.get_full_name }}</td>
+<td>{{ book.borrowed_on }}</td>
+{% if book.is_available %}
+        <td>Dostępna</td>
+{% else %}
+        <td>Wypożyczona</td>
+{%  endif %}
+</tr>
+  </tbody>
+</table>
+<tbody>
+
+<input type="submit" class="small blue button" name="return" value="Oddaj książkę">
+
+{% elif user.is_authenticated and book.is_available != 'true' %}
+<table class="styled-table">
+    <thead>
+        <tr>
+            <th>Indeks</th>
+            <th>Tytuł</th>
+            <th>Wypożyczona przez</th>
+            <th>Wypożyczona dnia</th>
+            <th>Dostępność</th>
+        </tr>
+    </thead>
+    <tbody>
+<tr>
+<td>{{ book.number }}</td>
+<td>{{ book.name }}</td>
+<td>{{ book.borrower.get_full_name }}</td>
+<td>{{ book.borrowed_on }}</td>
+{% if book.is_available %}
+        <td>Dostępna</td>
+{% else %}
+        <td>Wypożyczona</td>
+{%  endif %}
+</tr>
+  </tbody>
+</table>
+{% elif user.is_authenticated != 'true' %}
+<table class="styled-table">
+    <thead>
+        <tr>
+            <th>Indeks</th>
+            <th>Tytuł</th>
+            <th>Dostępność</th>
+        </tr>
+    </thead>
+    <tbody>
+<tr>
+<td>{{ book.number }}</td>
+<td>{{ book.name }}</td>
+{% if book.is_available %}
+        <td>Dostępna</td>
+{% else %}
+        <td>Wypożyczona</td>
+{%  endif %}
+</tr>
+  </tbody>
+</table>
+{% endif %}
+{% if request.user.is_superuser %}
+        <a class="small blue button" href="{% url 'book-delete' book.id %}">Usuń książkę</a>
+        <a class="small blue button" href="{% url 'book-history' book.id %}">Historia wypożyczeń</a>
+    {% endif %}
+</form>
+{% endblock %}

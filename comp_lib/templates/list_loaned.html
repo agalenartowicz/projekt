@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Wypożyczone książki{% endblock %}
+
+{% block content %}
+            <br>
+<a class="small blue button" href="{% url 'library' %}">Powrót do Strony Głównej</a>
+    <h2>Wypożyczone książki</h2>
+{% if book_list %}
+    <table class="styled-table">
+    <thead>
+        <tr>
+            <th>Indeks</th>
+            <th>Tytuł</th>
+            <th>Wypożyczona przez</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for book in book_list %}
+        <tr>
+            <td><a href="/book/{{ book.id }}">{{  book.number }}</a></td>
+            <td> {{ book.name }}</td>
+            <td>{{ book.borrower.get_full_name }}</td>
+        </tr>
+        {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p>Brak wypożyczeń</p>
+{% endif %}
+</form>
+
+
+{% endblock %}

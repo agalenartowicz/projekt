@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Strona główna{% endblock %}
+
+{% block content %}
+    <h1><strong>Zbiory biblioteki:</strong></h1>
+<ul style="list-style-type:none;">
+    <li>Ilość książek: {{num_books}}</li>
+    <li>Ilość aktualnie dostępnych książek: <a href="{%  url 'available-list' %}">{{num_books_available}}</a></li>
+</ul>
+    <link rel="stylesheet" href="{% static 'css/buttons.css' %}">
+       <div class="inner"><a class="large blue button" href="{% url 'books' %}">LISTA KSIĄŻEK</a></div>
+   <div class="inner"><a class="large blue button" href="{% url 'book-search' %}">WYSZUKAJ KSIĄŻKĘ</a></div>
+{% if user.is_authenticated %}
+<a class="large blue button" href="{% url 'loaned-list' %}">Moje wypożyczenia</a>
+{%  endif %}
+    {% if request.user.is_superuser %}
+        <a class="large blue button" href="{% url 'book-add' %}">Dodaj książkę</a>
+        <a class="large blue button" href="{% url 'list-loaned' %}">Wypożyczenia</a>
+        <a class="large blue button" href="{% url 'history' %}">Historia</a>
+    {% endif %}
+{% endblock %}

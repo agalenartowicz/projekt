@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Wyszukiwarka książek{% endblock %}
+
+{% block content %}
+        <br>
+<a class="small blue button" href="{% url 'library' %}">Powrót do Strony Głównej</a>
+    </br><br>
+<form action="{% url 'book-search' %}" method="POST">
+    {% csrf_token %}
+    {{ form }}
+    <input class="small blue button" type="submit" value="Szukaj">
+</form>
+<table class="styled-table">
+{% if results %}
+    <thead>
+        <tr>
+            <th>Indeks</th>
+            <th>Tytuł</th>
+            <th>Dostępność</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for book in results %}
+            <tr>
+        <td><a href="/book/{{ book.id }}">{{ book.number }}</a></td><td> {{ book.name }}</td>
+         {% if book.is_available %}
+            <td>Dostępna</td>
+        {% else %}
+            <td>Wypożyczona</td>
+        {%  endif %}
+        {% endfor %}
+     </tbody>
+</table>
+{% else %}
+    <p>Brak książek</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Dodaj książkę{% endblock %}
+
+{% block content %}
+<br>
+<a class="small blue button" href="{% url 'library' %}">Powrót do Strony Głównej</a>
+</br><br>
+<form action="{% url 'book-add' %}" method="POST">
+    {% csrf_token %}
+    <table>
+    {{ form }}
+        </table>
+    {% if request.user.is_superuser %}
+    <input type="submit" class="small blue button" value="Dodaj">
+    {% else %}
+    <p>Nie masz wymaganych uprawnień</p>
+    {% endif %}
+</form>
+
+
+{% endblock %}
